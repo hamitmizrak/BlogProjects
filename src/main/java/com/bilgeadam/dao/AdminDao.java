@@ -16,44 +16,6 @@ public class AdminDao implements IDAOImplements<AdminDto> {
 	// admin_email_addres character varying,
 	// admin_password character varying,
 	
-	public static void main(String[] args) {
-		// ekleme
-		// AdminDto adminDto = new AdminDto();
-		// adminDto.setName("Hamit");
-		// adminDto.setSurName("Mızrak");
-		// adminDto.setTelNumber("44444");
-		// adminDto.setEmailAddress("hamitmizrak@gmail.com");
-		// adminDto.setPassword("şifre");
-		//
-		// AdminDao adminDao = new AdminDao();
-		// adminDao.insert(adminDto);
-		
-		// güncelleme
-		// AdminDto adminDto2 = new AdminDto();
-		// adminDto2.setName("Hamit11");
-		// adminDto2.setSurName("Mızrak11");
-		// adminDto2.setTelNumber("11");
-		// adminDto2.setEmailAddress("hamitmizrak11@gmail.com");
-		// adminDto2.setPassword("şifre11");
-		// adminDto2.setId(1);
-		//
-		// AdminDao adminDao2 = new AdminDao();
-		// adminDao2.update(adminDto2);
-		
-		// silme
-		// AdminDto adminDto3 = new AdminDto();
-		// adminDto3.setId(9);
-		//
-		// AdminDao adminDao3 = new AdminDao();
-		// adminDao3.delete(adminDto3);
-		
-		AdminDao adminDao4 = new AdminDao();
-		
-		ArrayList<AdminDto> temp = adminDao4.list();
-		temp.forEach(System.out::println);
-		
-	}
-	
 	@Override
 	public void insert(AdminDto t) {
 		try (Connection connection = getInterfaceConnection()) {
@@ -123,9 +85,8 @@ public class AdminDao implements IDAOImplements<AdminDto> {
 	public ArrayList<AdminDto> list() {
 		ArrayList<AdminDto> list2 = new ArrayList<AdminDto>();
 		AdminDto adminDto;
-		// =?,=?,=?,=?,
 		try (Connection connection = getInterfaceConnection()) {
-			String sql = "select * from  admin_blog";
+			String sql = "select * from admin_blog";
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
