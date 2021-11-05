@@ -18,6 +18,11 @@ public class UserDto extends CommonPropery implements Serializable {
 		this.isActive = true;
 	}
 	
+	@Override
+	public String toString() {
+		return "UserDto [isActive=" + isActive + ", HesCodes=" + HesCodes + "]";
+	}
+	
 	public UserDto(String name, String surName, String telNumber, String emailAddress, String password,
 			boolean isActive, String hesCodes) {
 		super(name, surName, telNumber, emailAddress, password);
