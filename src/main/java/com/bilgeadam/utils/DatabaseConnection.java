@@ -56,7 +56,6 @@ public class DatabaseConnection {
 			System.out.println("Singleton hatası");
 			e.printStackTrace();
 		}
-		
 		return instance;
 	}
 	
