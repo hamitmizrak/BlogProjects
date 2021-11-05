@@ -1,0 +1,193 @@
+--truncate
+
+select * from ogretmen;
+--1:erkek
+--0:bayan
+insert into ogretmen 
+(ogretmen_adi,ogretmen_soyadi,ogretmen_yas,ogretmen_cinsiyet, ogretmen_sehir,ogretmen_ulke,ogretmen_maas) 
+values('ahmet','ışık',28,1,'newyork','Amerika',5000);
+
+insert into ogretmen 
+(ogretmen_adi,ogretmen_soyadi,ogretmen_yas,ogretmen_cinsiyet, ogretmen_sehir,ogretmen_ulke,ogretmen_maas) 
+values('mehmet','ışık',29,1,'Berlin','Almanya',5000);
+
+insert into ogretmen 
+(ogretmen_adi,ogretmen_soyadi,ogretmen_yas,ogretmen_cinsiyet, ogretmen_sehir,ogretmen_ulke,ogretmen_maas) 
+values('nalan','çiçek',29,0,'Köln','Almanya',6000);
+
+insert into ogretmen 
+(ogretmen_adi,ogretmen_soyadi,ogretmen_yas,ogretmen_cinsiyet, ogretmen_sehir,ogretmen_ulke,ogretmen_maas) 
+values('gönül','su',29,0,'Düsseldof','Almanya',6000);
+
+insert into ogretmen 
+(ogretmen_adi,ogretmen_soyadi,ogretmen_yas,ogretmen_cinsiyet, ogretmen_sehir,ogretmen_ulke,ogretmen_maas) 
+values('ismet','mızrak',28,1,'İstanbul','Türkiye',7000);
+
+insert into ogretmen 
+(ogretmen_adi,ogretmen_soyadi,ogretmen_yas,ogretmen_cinsiyet, ogretmen_sehir,ogretmen_ulke,ogretmen_maas) 
+values('vahap','demir',26,1,'ankara','Türkiye',7000);
+
+insert into ogretmen 
+(ogretmen_adi,ogretmen_soyadi,ogretmen_yas,ogretmen_cinsiyet, ogretmen_sehir,ogretmen_ulke,ogretmen_maas) 
+values('kerim','mızrak',35,1,'ankara','Türkiye',8000);
+
+---------------------------------------------------------------------------------------------------------------------------
+select * from ogrenci;
+insert into ogrenci (ogrenci_adi,ogrenci_soyadi,ogrenci_dersler,ogrenci_yas,ogretmen_id) 
+values('meliha','yılmaz','Türkçe',15,7);
+insert into ogrenci (ogrenci_adi,ogrenci_soyadi,ogrenci_dersler,ogrenci_yas,ogretmen_id)  
+values('kerim','yılmaz','Türkçe',15,7);
+insert into ogrenci (ogrenci_adi,ogrenci_soyadi,ogrenci_dersler,ogrenci_yas,ogretmen_id) 
+values('mustafa','gönül','Türkçe',18,6);
+insert into ogrenci (ogrenci_adi,ogrenci_soyadi,ogrenci_dersler,ogrenci_yas,ogretmen_id)  
+values('deniz','yerli','Türkçe',19,5);
+insert into ogrenci (ogrenci_adi,ogrenci_soyadi,ogrenci_dersler,ogrenci_yas,ogretmen_id) 
+values('sezer','yiğit','Matematik',19,5);
+insert into ogrenci (ogrenci_adi,ogrenci_soyadi,ogrenci_dersler,ogrenci_yas,ogretmen_id) 
+values('sezer','sözlü','Matematik',20,5);
+
+
+select * from ogrenci;
+select * from ogretmen;
+
+
+-----------------------------------INDEX------------------------------------------------------------------------------------------
+-- create index index_degisken on prices(name);
+-- öğrenci  tablosundaki öğrenci_adi index
+create index ogrenci_ogrenciadi_index on ogrenci(ogrenci_adi);
+
+-- öğretmen tablosundaki öğretmen_adi index
+create index ogretmen_ogretmenadi_index on ogretmen(ogretmen_adi);
+
+-----------------------------------TRUNCATE------------------------------------------------------------------------------------------
+
+--DDL: truncate
+TRUNCATE table prices
+RESTART IDENTITY;
+
+
+-----------------------------------ALTER------------------------------------------------------------------------------------------
+--öğrenci tablosuna ekleme yapıldığında otomatik olarak şimdiki tarihi eklesin (sutun)
+alter table ogrenci 
+ add simdiki_tarih TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP; 
+
+--öğretmen tablosuna ekleme yapıldığında otomatik olarak şimdiki tarihi eklesin (sutun)
+alter table ogretmen
+ add simdiki_tarih  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+
+
+
+-----------------------------------JOIN------------------------------------------------------------------------------------------
+select * from ogretmen,ogrenci;
+--inner join:öğrenci ve öğretmenin ortak alanlarını listeleyelim. 
+select * from ogretmen t inner join ogrenci r on t.ogretmen_id = r.ogretmen_id;
+
+--left join
+select * from ogretmen t left join ogrenci r on t.ogretmen_id = r.ogretmen_id;
+
+--right join
+select * from ogretmen t right join ogrenci r on t.ogretmen_id = r.ogretmen_id;
+
+--full join
+select * from ogretmen t full join ogrenci r on t.ogretmen_id = r.ogretmen_id;
+
+--cross join: on yazmıyoruz.
+select * from ogretmen t cross join ogrenci r; 
+
+
+-----------------------------------VIEW------------------------------------------------------------------------------------------
+--view:sanal tablodur. bizim orijinal tablolarımıza bir şey olmasın ben sanal tabloda işlemler yapayım
+--view: metotlara benzer sürekli yazdığımız kodlarını sürekli yazmaktansa önce view oluştururuz sonra compiler ederiz sonra kullanırız.
+--view: yasdığımız view sol tarafta görebileceğiz
+--view : KESİNLİKLE YAPACAĞIMIZ HATAAAAAAAAA::::::  compiler yapmadan kullanmayın yani F5 tuşuyla compiler yapalım.
+
+--view yazımı:
+create view  sorgu1
+as
+select * from ogretmen ;
+
+--view çağırmak
+select * from sorgu1;
+
+--view drop
+drop view sorgu1;
+---view 2---------------------------------------------------------------------------------------------------------
+select * from ogrenci;
+--öğrenci tablosundaki  öğrenci_Adi sutunundaki ilk harfi s olanları listeyen view oluşturalım
+create view s_olanlar
+as
+select * from ogrenci as o where o.ogrenci_adi like('s%');
+
+
+--view çağıralım 
+select * from s_olanlar;
+--view silelim
+--drop view s_olanlar
+
+  
+
+ 
+ 
+  
+ -----------------------------------------------------------------------------------------------------------------------------------------
+ --UML:
+ 
+ -- Unified Modeling Language : 1995 yılında programlama diloi iş problem çözümüdür.
+ -- büyük resmi görmemizi sağlar
+ -- farklı dillerdeki yazılımcıların anlaştığı noktadır.
+ -- C# Java Pyhton v.s.
+ --karmaşıklığı önlüyor.
+ 
+  -----------------------------------------------------------------------------------------------------------------------------------------
+ select * from ogretmen;
+ --Group By - Having:
+ 
+ --Öğretmen tablosunda Hangi Şehirde kaç ülke vardır ?
+select og.ogretmen_ulke, count(og.ogretmen_sehir) from ogretmen as og GROUP by og.ogretmen_ulke;
+
+--Öğretmen tablsoundaki hangi ülkede öğretmen maaş ortalaması ?
+select t.ogretmen_ulke, ceil(avg(t.ogretmen_maas))  from ogretmen as t group by t.ogretmen_ulke
+ 
+--şehirlerde öğretmenlerin yaş ortalaması ?
+select t.ogretmen_sehir, floor(avg(t.ogretmen_yas))  from ogretmen as t group by t.ogretmen_sehir order by t.ogretmen_sehir
+  
+   
+-- öğretmenler tablosundaki yaş ortalaması >28 öğretmen listesi
+-- ipuuc: grouptaki sonucdan şart yapacaksa eğer having kullanalıyız.
+select t.ogretmen_sehir, floor(avg(t.ogretmen_yas)) as "yaş ortalaması"  
+from ogretmen as t 
+group by t.ogretmen_sehir 
+having floor(avg(t.ogretmen_yas))>28;
+
+-- öğretmenler tablosundaki yaş ortalaması >28 öğretmenlerden Bayan olanların sayısı (Cinsiyet:0 Bayan kabul ettik)
+
+-- öğretmenler tablosundaki yaş ortalaması >28 öğretmenlerden Erkekler olanların sayısı (Cinsiyet:1 Erkek  kabul ettik)
+
+--şehirlerde öğretmenlerin yaş ortalaması > 5000  büyük olanları listeleyelim. 
+
+  
+  
+ -----------------------------------------------------------------------------------------------------------------------------------------
+ --check:
+ --unique
+  
+  
+ -----------------------------------------------------------------------------------------------------------------------------------------
+ --advanced
+ -----------------------------------------------------------------------------------------------------------------------------------------
+ --view
+ ----------------------------------------------------------------------------------------------------------------------------------------
+ --function
+ -----------------------------------------------------------------------------------------------------------------------------------------
+ --Trigger
+ -----------------------------------------------------------------------------------------------------------------------------------------
+ --procedure
+ -----------------------------------------------------------------------------------------------------------------------------------------
+ --transaction
+ -----------------------------------------------------------------------------------------------------------------------------------------
+ --for Jdbc Postgresql connection
+
+
+
+
+
