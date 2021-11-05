@@ -2,10 +2,13 @@ package com.bilgeadam.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DatabaseConnection {
 	// database bağlantısını kuracak class
 	private Connection connection;
+	
+	private static int count = 0;
 	
 	// url username password çağırmak
 	private static DatabaseInformation databaseInformation;
@@ -22,10 +25,12 @@ public class DatabaseConnection {
 	private DatabaseConnection() {
 		try {
 			Class.forName(databaseInformation.getForNameData());
-			System.out.println("postgresql-42.3.1 jar Driver Yüklendi");
+			// System.out.println("postgresql-42.3.1 jar Driver Yüklendi");
 			
 			this.connection = DriverManager.getConnection(url, userName, password);
-			System.out.println("Başarılı  bağlantı.");
+			// System.out.println("Başarılı bağlantı.");
+			count++;
+			System.out.println("bağlantı sayısı: " + count);
 			
 		} catch (Exception e) {
 			System.out.println("Hatalar meydana geldi");
@@ -41,9 +46,17 @@ public class DatabaseConnection {
 	
 	// singleton design pattern 3.özellik
 	public static DatabaseConnection getInstance() {
-		if (instance == null) {
-			instance = new DatabaseConnection();
+		try {
+			if (instance == null) {
+				instance = new DatabaseConnection();
+			} else if (instance.getConnection().isClosed()) {
+				instance = new DatabaseConnection();
+			}
+		} catch (SQLException e) {
+			System.out.println("Singleton hatası");
+			e.printStackTrace();
 		}
+		
 		return instance;
 	}
 	
