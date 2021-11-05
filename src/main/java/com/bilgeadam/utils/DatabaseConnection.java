@@ -40,7 +40,6 @@ public class DatabaseConnection {
 	}
 	
 	// singleton design pattern 3.özellik
-	// syncronized
 	public static DatabaseConnection getInstance() {
 		if (instance == null) {
 			instance = new DatabaseConnection();
