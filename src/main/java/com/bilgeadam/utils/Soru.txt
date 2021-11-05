@@ -1,0 +1,289 @@
+
+Design pattern Singleton,Builder,prototype,factory,factory abstract,object pool sırasıyla işlenecek projeye giydirelecek.
+Yagni,Kiss,DRY ,CCP proje içerisinde anlatılacak ve  proje içerisine gömülecektir.
+SOLID prensibi bütün konu içinde anlatılacak
+MVC mimarisi alatılacak
+Java 8 ile gelen stream yapısıda kullanılacak
+bean öğrenmiş olacağız
+Generics hatırlamış olacağız 
+Logger kütüphanesini öğrenmiş olacağız 
+Lombok kütüphanesini kullanmış olacağız.
+Design pattern Singleton,Builder,prototype,factory,factory abstract,object pool
+Clean code mantığını yavaş yavaş oturmaya başlayacak
+M.V.C mantığına giriş yapmış ve mantığını almış olacağız.
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+Projede dikkat edeceklerimiz
+
+Projemiz blog projesinin backend kısmı olacaktır. (Console ile habereşeceğiz)
+Her zaman kodlama yaparken clean codes mantığını düşünerek temiz ve herkesin okumasını rahat olacak şekilde yazmaya çalışalım
+
+Database insert-delete-update işlemlerimizde transaction kullanacağız
+her database tablosunda id yani PK her zaman index olacak şekilde olması 
+
+Sorularımız lütfen sorularımız adım adım yapalım. öncelikle siz uğraşacaksınız sonrasında beraber yapacağız. 
+Classlarımız serializable kullanalım.
+Kullanmak istersek lombok kütüphanesini kullanalım.
+Logger kütüphanesini projemize ekliyelim
+
+ 
+
+
+Projede kullanılacak database özellikleri
+index 
+string
+Trigger 
+Stored procedure 
+transaction 
+function 
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+Hazırlıklar
+Logger kütüphanesi jar indirip proje yükleyelim
+Lombok kütüphanesi jar indirip proje yükleyelim
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+dynamics web Project ile Projemizi kuruyoruz.
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+1.adım: Java ile postgresql bağlantısını kuralım 
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+2.adım: jdbc bağlantısını kurarken Singleton Design pattern'e göre yapalım 
+
+dao(controller)
+dto(model)
+
+3.adım: paket oluşturmak
+com.bilgeadam.model  ==> dto
+com.bilgeadam.view  ==> index.htm
+com.bilgeadam.controller ==> dao 
+com.bilgeadam.ntier ==> controller ile model arasındaki loose coupling(gevşek bağlama)
+com.bilgeadam.utils ==> database bağlantısı , Logger için
+com.bilgeadam.admin ==> user ve admin 
+com.bilgeadam.listener
+com.bilgeadam.filter 
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+4.adım: paketlerden model olan paketin içeriğine;
+AdminDto
+UserDto 
+commonPropery adında classlar oluşturalım.
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+5.adım 
+commonPropery classının attributesları
+id:int
+name: String
+surname: String
+telNumber: String
+emailAddress: String
+password: String
+createDate: Date
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+6.adım 
+AdminDto class property commonPropery extends edelim
+registerNumberOfRecords:int    ==>  register sisteme o gün kayıt olan kişi sayısı
+	
+
+-----------------------------------------------------------------------------------------------------------------------------------
+7.adım 
+UserDto class property commonPropery extends edelim
+isActive:boolean
+HesCodes: String
+temporaryUUID: UUID
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+8.adım  IDAOImplements adında (interface) oluşturalım. 
+	// CRUD interface
+	public void create(T dto);
+
+	public void update(T dto);
+
+	public void delete(T dto);
+
+	public ArrayList<T> list();
+
+	// gövdeli method
+	default Connection getInterfaceConnection() {
+		DatabaseConnectionEcodation baglanti = new DatabaseConnectionEcodation();
+		return connected.getConnectionDb(); //database classındaki gelen database bağlantısını sağlayan method
+	}
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+9.adım  dao paketine aşağıdaki classları yükleyelim ve IDAOImplements interface impelements edelim.
+AdminDao classı 
+UserDao class
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+10.adım dao classlarına CRUD için gerekli kodlarımızı yazalım.
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+11.adım : ntier classımıza IDAOImplements implement edelim 
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+12.) Database ERD diyagram yapmak 
+user ve admin için ayrı ayrı tablo oluşturalım. 
+
+
+user tablosu (user)
+id:int ==> NN AI PK
+name: varchar(150) ==> constraint ==> default adınızı giriniz
+surname: varchar(150) ==> constraint ==> default adınızı giriniz
+tel_number: varchar(150) ==> constraint ==> default +90 000 00 00
+email_ddress: varchar(150) ==> constraint ==> default deneme@gmail.com
+password: varchar(150)  ==> constraint ==> check(password>0)
+isActive:smallInt
+createDate: Date : CURRENT_TIMESTAMP
+
+
+
+
+admin tablosu (admin )
+
+id:int
+name: varchar(150)
+surname: varchar(150)
+tel_number: varchar(150)
+email_address: varchar(150)
+password: varchar(150)
+HesCodes: varchar(150)
+temporaryUUID: varchar(50)
+create_date: Date :CURRENT_TIMESTAMP
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+13.adım 
+admin (1) - user (N) ==> ilişki kurulacak
+constraint için: NN PK FK AI hatırlamış olacağız.
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+-----------------------------------------------------------------------------------------------------------------------------------
+14.adım AdminDto ve UserDto arasında composition kuralım 
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+zorunda değiliz
+15.adım  desing pattern için com.bilgeadam.builder adında pakete  BuilderBilgeAdam adında builderi yazalım.
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+18. ntier classında loginBlog adında metot yapalım. 
+User database sorgulatma yapacağız eğer login olurken gelen bilgiler varsa userAdmin metoduna göndersin.
+
+login -register 
+loginMetodu ==> database kullanıcını vermiş olduğu email ve password database sorgulama yapacak
+public boolean getSearchLogin(UserDto userDto){
+	"select * from user_blog where user_email="+userDto.getEmail()+ "and user_password="+userDto.getEmail();
+	
+	//varsa ==> return 1;
+	//yoksa ==> return 0;
+}
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+19.adım: admin kullanıcı bilgilerini kayıtlı olan admin.txt dosyasından okuyacağız. admin bu bilgilerle giriş yapacak doğru bilgi girerse
+
+admin.txt 
+admin_password
+admin_email
+
+dosyadan okuduklarımızı AdminDto aktarıp bunuda  gidip AdminController vereceğiz.
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+20.adım: user database üzerindenki bilgilerle ışığında giriş yapacak giriş hakkı olarak 5 kere hakkı olması gerekiyor eğer 
+user 5 kere yanlış yaparsa hesabı donduralım yani isActive false yapalım taki Admin true yapana kadar sisteme giriş yapamasın
+eğer şifreyi doğru girmişse user
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+21. ntier classında: admin_number_of_record  ==> trigger yazıyorsun user tablosuna bir veri eklenirse admin tablosundaki admin_of_record bir artacak 
+sisteme gün içinde toplam kayıt verecek metot ve bu bilgileri database çekecek
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+22.adım 
+com.bilgeadam.writer ==> writer classı oluşturalım 
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+24.adım writer classına writerDto classını ekliyelim  farklı olarak : yazarUUID ==> UUID
+
+25.adım writer classına writerDao classını ekliyelim
+
+26.adım writer classına writerController classını ekliyelim  
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+writer tablsosunu socket programalama yazacağımız tablo bilgisi
+
+Writer ile admin arasıanda Socket programlama
+chat uygulaması
+Database chat mesajlarını yazsın.
+
+
+Databese yazarken Encoder-DEcoder database olarak yazmak 
+veya 
+Databese yazarken MD5 olarak database  yazmak 
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+ 
+user her kayıt olduğunda database user_detail diye tablo oluşturalım 
+counter:int
+ 
+ 
+ Proje içeriğine yeni eklemeler
+
