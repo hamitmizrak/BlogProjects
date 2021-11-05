@@ -11,7 +11,7 @@ public class DatabaseInformation {
 	
 	// parametresiz constructor
 	public DatabaseInformation() {
-		this.url = "jdbc:postgresql://localhost:5432/northwind";
+		this.url = "jdbc:postgresql://localhost:5432/blog_project";
 		this.userName = "postgres";
 		this.password = "root";
 		this.forNameData = "org.postgresql.Driver";
