@@ -19,6 +19,16 @@ public class AdminDto extends CommonPropery {
 		super(name, surName, telNumber, emailAddress, password);
 		this.registerNumberOfRecords = registerNumberOfRecords;
 	}
+	
+	// toString
+	@Override
+	public String toString() {
+		return "AdminDto [registerNumberOfRecords=" + registerNumberOfRecords + ", getId()=" + getId() + ", getName()="
+				+ getName() + ", getSurName()=" + getSurName() + ", getTelNumber()=" + getTelNumber()
+				+ ", getEmailAddress()=" + getEmailAddress() + ", getPassword()=" + getPassword() + ", getCreateDate()="
+				+ getCreateDate() + "]";
+	}
+	
 	// getter and setter
 	
 	public int getRegisterNumberOfRecords() {
