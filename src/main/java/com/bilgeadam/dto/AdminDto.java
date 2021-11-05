@@ -13,7 +13,7 @@ public class AdminDto extends CommonPropery {
 		// TODO Auto-generated constructor stub
 	}
 	
-	// parametresiz constructor
+	// parametreli constructor
 	public AdminDto(String name, String surName, String telNumber, String emailAddress, String password,
 			int registerNumberOfRecords) {
 		super(name, surName, telNumber, emailAddress, password);
