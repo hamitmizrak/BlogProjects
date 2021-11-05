@@ -9,7 +9,7 @@ import com.bilgeadam.utils.DatabaseConnection;
 public interface IDAOImplements<T> {
 	
 	// gövdesiz metotlarımızı yazdık
-	public void create(T t); // insert into tabloAdi() values()
+	public void insert(T t); // insert into tabloAdi() values()
 	
 	public void update(T t);// update tabloAdi() set adi=""
 	
